@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+
+// Алгоритм N^2
+bool searchN2(int arr[][3], int rows, int cols, int target) {
+    for(int i=0; i<rows; i++) {
+        for(int j=0; j<cols; j++) {
+            if(arr[i][j] == target) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Алгоритм N+n
+bool searchNPlusN(int arr[][3], int rows, int cols, int target) {
+    for(int i=0; i<rows; i++) {
+        for(int j=0; j<cols; j++) {
+            if(arr[i][j] == target) {
+                return true;
+            }
+            if(arr[i][j] > target) {
+                return false;  // если текущий элемент больше целевого, прекращаем поиск в этой строке
+            }
+        }
+    }
+    return false;
+}
+
+// Алгоритм N(?)
+bool searchNUnknown(int arr[][3], int rows, int cols, int target) {
+    int n = rows * cols;
+    int low = 0, high = n-1;
+
+    while(low <= high) {
+        int mid = (low + high) / 2;
+        int current = arr[mid/cols][mid%cols]; 
+        if(current == target) {
+            return true;
+        }
+        else if(current < target) {
+            low = mid + 1;
+        }
+        else {
+            high = mid - 1;
+        }
+    }
+    return false;
+}
+
+int main() {
+    int arr[2][3] = {{1, 2, 3},
+                     {4, 5, 6}};
+    int target = 5;
+
+    bool foundN2 = searchN2(arr, 2, 3, target);
+    bool foundNPlusN = searchNPlusN(arr, 2, 3, target);
+    bool foundNUnknown = searchNUnknown(arr, 2, 3, target);
+
+    cout << "Алгоритм N^2: ";
+    if(foundN2) {
+        cout << "Число найдено" << endl;
+    } else {
+        cout << "Число не найдено" << endl;
+    }
+    cout << "Алгоритм N+n: ";
+    if(foundNPlusN) {
+        cout << "Число найдено" << endl;
+    } else {
+        cout << "Число не найдено" << endl;
+    }
+
+    cout << "Алгоритм N(?): ";
+    if(foundNUnknown) {
+        cout << "Число найдено" << endl;
+    } else {
+        cout << "Число не найдено" << endl;
+    }
+
+    return 0;
+}
+
+
